@@ -1,0 +1,363 @@
+{% extends "base.html" %}
+
+{% block css %}
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        overflow-x: hidden;
+    }
+
+    .admin-wrapper {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    /* 🔥 Fixed Sidebar */
+    .sidebar {
+        width: 260px;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: linear-gradient(180deg, #1a2332 0%, #0f1419 100%);
+        color: white;
+        display: flex;
+        flex-direction: column;
+        padding-top: 30px;
+        box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+        overflow-y: auto;
+    }
+
+    .sidebar h4 {
+        font-weight: 700;
+        margin-bottom: 30px;
+        text-align: center;
+        font-size: 1.3rem;
+        letter-spacing: 0.5px;
+        color: #fff;
+    }
+
+    .sidebar a {
+        color: #b0b8c1;
+        padding: 14px 24px;
+        display: block;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+        font-weight: 500;
+        border-left: 4px solid transparent;
+        margin: 4px 0;
+    }
+
+    .sidebar a:hover {
+        color: #0d6efd;
+        background-color: rgba(13, 110, 253, 0.1);
+        border-left-color: #0d6efd;
+        padding-left: 28px;
+    }
+
+    .sidebar a.active {
+        color: #fff;
+        background-color: rgba(13, 110, 253, 0.2);
+        border-left-color: #0d6efd;
+        font-weight: 600;
+    }
+
+    /* Main content area */
+    .main-content {
+        margin-left: 260px;
+        min-height: 100vh;
+        padding: 40px 35px;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        overflow-y: auto;
+    }
+
+    /* Cards styling */
+    .card {
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        margin-bottom: 24px;
+        background-color: #fff;
+    }
+
+    .card:hover {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        transform: translateY(-2px);
+    }
+
+    .card-body {
+        padding: 28px;
+    }
+
+    /* Form controls */
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid #e0e6ed;
+        padding: 10px 14px;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+        background-color: #f8f9fb;
+    }
+
+    .form-control:focus {
+        border-color: #0d6efd;
+        background-color: #fff;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+    }
+
+    /* Buttons */
+    .btn {
+        border-radius: 8px;
+        font-weight: 500;
+        padding: 10px 18px;
+        transition: all 0.2s ease;
+        border: none;
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        color: white;
+    }
+
+    .btn-success:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    }
+
+    .btn-warning {
+        background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+        color: white;
+    }
+
+    .btn-warning:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+    }
+
+    .btn-danger {
+        background: linear-gradient(135deg, #dc3545 0%, #e74c3c 100%);
+        color: white;
+    }
+
+    .btn-danger:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #0d6efd 0%, #0d5fc5 100%);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+    }
+
+    .btn-sm {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+
+    /* Tables */
+    .table {
+        margin-bottom: 0;
+    }
+
+    .table thead th {
+        background-color: #f8f9fb;
+        border-top: none;
+        border-bottom: 2px solid #e0e6ed;
+        font-weight: 600;
+        color: #1a2332;
+        padding: 16px 12px;
+    }
+
+    .table tbody td {
+        padding: 14px 12px;
+        border-color: #e9ecef;
+        vertical-align: middle;
+    }
+
+    .table tbody tr {
+        transition: background-color 0.2s ease;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f8f9fb;
+    }
+
+    /* Badges */
+    .badge {
+        padding: 6px 12px;
+        font-weight: 500;
+        border-radius: 6px;
+    }
+
+    /* Headings */
+    h4, h5, h6 {
+        color: #1a2332;
+        font-weight: 600;
+        margin-bottom: 16px;
+    }
+
+    h4 {
+        font-size: 1.5rem;
+    }
+
+    h5 {
+        font-size: 1.2rem;
+    }
+
+    /* HR */
+    hr {
+        border: none;
+        border-top: 1px solid #e0e6ed;
+        margin: 20px 0;
+    }
+
+    /* Logout button */
+    .logout-btn {
+        margin-top: auto;
+        padding: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logout-btn .btn-danger {
+        width: 100%;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .sidebar {
+            width: 0;
+            padding-top: 0;
+            overflow: hidden;
+            transition: width 0.3s ease;
+        }
+
+        .sidebar.active {
+            width: 260px;
+        }
+
+        .main-content {
+            margin-left: 0;
+            padding: 20px 15px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .table {
+            font-size: 0.85rem;
+        }
+
+        .table thead th,
+        .table tbody td {
+            padding: 10px 8px;
+        }
+    }
+
+    /* Scrollbar styling */
+    .sidebar::-webkit-scrollbar,
+    .main-content::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .sidebar::-webkit-scrollbar-track,
+    .main-content::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    .main-content::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+    }
+
+    .main-content::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 0, 0, 0.3);
+    }
+</style>
+
+{% block extra_css %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+
+<div class="admin-wrapper">
+
+    <div class="sidebar">
+        <h4 class="text-center">Admin Panel</h4>
+
+        <a href="{% url 'admin_add_car' %}" class="{% if 'add_car' in request.path %}active{% endif %}">
+            Add Car
+        </a>
+
+        <a href="{% url 'admin_car_list' %}" class="{% if 'list_car' in request.path %}active{% endif %}">
+            List Cars
+        </a>
+
+        <a href="{% url 'admin_car_type' %}" class="{% if 'car-types' in request.path %}active{% endif %}">
+            Car Types
+        </a>
+
+        <a href="{% url 'admin_location' %}" class="{% if 'locations' in request.path %}active{% endif %}">
+            Locations
+        </a>
+
+        <a href="{% url 'admin_insurance' %}" class="{% if 'insurances' in request.path %}active{% endif %}">
+            Insurance
+        </a>
+
+        <a href="{% url 'admin_maintenance' %}" class="{% if 'maintenances' in request.path %}active{% endif %}">
+            Maintenance
+        </a>
+
+        <a href="{% url 'admin_bookings' %}" class="{% if 'bookings' in request.path %}active{% endif %}">
+            Bookings
+        </a>
+
+        <a href="{% url 'admin_payments' %}" class="{% if 'payments' in request.path %}active{% endif %}">
+            Payments
+        </a>
+
+        <a href="{% url 'admin_users' %}" class="{% if 'users' in request.path %}active{% endif %}">
+            Users
+        </a>
+
+        <form method="post" action="{% url 'logout' %}" class="logout-btn text-center">
+            {% csrf_token %}
+            <button class="btn btn-danger btn-sm w-100">
+                Logout
+            </button>
+        </form>
+    </div>
+
+    <div class="main-content">
+        {% block admin_content %}
+        {% endblock %}
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Payment successfull</h1>
+<script>
+    setTimeout(function() {
+        window.location.href = "{% url 'my_bookings' %}";
+    }, 3000);
+</script>
+{% endblock %}

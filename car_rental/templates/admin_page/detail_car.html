@@ -1,0 +1,71 @@
+{% extends "admin_base.html" %}
+{% block title %}Car Detail{% endblock %}
+
+{% block admin_content %}
+
+<!-- CAR INFO -->
+<div class="card shadow mb-4">
+
+    {% if car.image %}
+    <div class="d-flex justify-content-center mb-3">
+        <img src="{{ car.image.url }}" class="img-fluid" style="height:300px; object-fit:cover;">
+    </div>
+    {% endif %}
+
+    <div class="card-body">
+        <h3>{{ car.brand }} {{ car.model }}</h3>
+        <hr>
+
+        <p><strong>Registration:</strong> {{ car.registration_number }}</p>
+        <p><strong>Location:</strong> {{ car.current_location }}</p>
+        <p><strong>Fuel:</strong> {{ car.fuel_type }}</p>
+        <p><strong>Transmission:</strong> {{ car.transmission }}</p>
+        <p><strong>Seats:</strong> {{ car.seats }}</p>
+        <p><strong>Price per Day:</strong> ₹ {{ car.base_price_per_day }}</p>
+
+        {% if car.status %}
+        <span class="badge badge-success">Available</span>
+        {% else %}
+        <span class="badge badge-danger">Not Available</span>
+        {% endif %}
+    </div>
+</div>
+
+<!-- BOOKINGS -->
+<h4>Booking History</h4>
+
+{% if bookings %}
+{% for booking in bookings %}
+<div class="card shadow mb-3">
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between">
+            <h5>Booking by {{ booking.user.username }}</h5>
+
+            {% if booking.booking_status == "confirmed" %}
+            <span class="badge badge-success">Confirmed</span>
+            {% elif booking.booking_status == "pending" %}
+            <span class="badge badge-warning">Pending</span>
+            {% elif booking.booking_status == "cancelled" %}
+            <span class="badge badge-danger">Cancelled</span>
+            {% elif booking.booking_status == "completed" %}
+            <span class="badge badge-secondary">Completed</span>
+            {% endif %}
+        </div>
+
+        <hr>
+
+        <p><strong>Start:</strong> {{ booking.start_date }}</p>
+        <p><strong>End:</strong> {{ booking.end_date }}</p>
+        <p><strong>Total:</strong> ₹ {{ booking.total_amount }}</p>
+
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<div class="alert alert-info">
+    No bookings for this car yet.
+</div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container my-5">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <!-- Success Alert -->
+            <div id="successAlert" class="alert alert-success text-center shadow-sm">
+                <h4 class="mb-1">
+                    <i class="fa fa-check-circle"></i> Booking Confirmed!
+                </h4>
+                <p class="mb-0">
+                    Thank you for choosing us. Your booking has been successfully completed.
+                </p>
+            </div>
+
+            <!-- Booking Card -->
+            <div class="card shadow-lg border-0">
+
+                <div class="card-header bg-dark text-white text-center">
+                    <h5 class="mb-0">
+                        Booking #{{ booking.id }}
+                    </h5>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Car Name</strong>
+                            <p class="text-muted mb-0">
+                                {{ booking.car }}
+                            </p>
+                        </div>
+
+                        <div class="col-md-6">
+                            <strong>Status</strong><br>
+                            {% if booking.booking_status == "confirmed" %}
+                                <span class="badge badge-success px-3 py-2">
+                                    Confirmed
+                                </span>
+                            {% else %}
+                                <span class="badge badge-danger px-3 py-2">
+                                    {{ booking.booking_status }}
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Start Date</strong>
+                            <p class="text-muted mb-0">
+                                {{ booking.start_date }}
+                            </p>
+                        </div>
+
+                        <div class="col-md-6">
+                            <strong>End Date</strong>
+                            <p class="text-muted mb-0">
+                                {{ booking.end_date }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Price Per Day</strong>
+                            <p class="text-muted mb-0">
+                                ₹ {{ booking.base_price_per_day }}
+                            </p>
+                        </div>
+
+                        <div class="col-md-6">
+                            <strong>Total Amount</strong>
+                            <p class="h5 text-success mb-0">
+                                ₹ {{ booking.total_amount }}
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="card-footer text-center bg-light">
+                    <a href="{% url 'my_bookings' %}" class="btn btn-dark">
+                        Go to MyBookings
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    setTimeout(function() {
+        var alertBox = document.getElementById("successAlert");
+        if (alertBox) {
+            alertBox.style.transition = "opacity 0.5s ease";
+            alertBox.style.opacity = "0";
+            setTimeout(() => alertBox.remove(), 500);
+        }
+    }, 3000); // 3 seconds
+</script>
+
+{% endblock %}

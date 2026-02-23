@@ -1,0 +1,47 @@
+{% extends "admin_base.html" %}
+{% block title %}Car List{% endblock %}
+
+{% block admin_content %}
+
+<h3 class="mb-4">All Cars</h3>
+
+<div class="row">
+    {% for car in cars %}
+    <div class="col-md-4 mb-4">
+        <div class="card shadow">
+
+            {% if car.image %}
+            <img src="{{ car.image.url }}" class="card-img-top" style="height:200px; object-fit:cover;">
+            {% endif %}
+
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between">
+                    <h5>{{ car.brand }} {{ car.model }}</h5>
+                    <span class="badge badge-success d-flex align-items-center justify-content-center"
+                        style="height: 28px;">
+                        ₹ {{ car.base_price_per_day }}/day
+                    </span>
+                </div>
+
+                <hr>
+
+                <a href="{% url 'admin_detail_car' car.slug %}" class="btn btn-outline-dark btn-sm btn-block mb-2">
+                    View Details
+                </a>
+
+                <a href="{% url 'admin_update_car' car.slug %}" class="btn btn-outline-primary btn-sm btn-block mb-2">
+                    Update
+                </a>
+
+                <a href="{% url 'admin_delete_car' car.slug %}" class="btn btn-outline-danger btn-sm btn-block">
+                    Delete
+                </a>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

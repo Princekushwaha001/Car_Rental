@@ -1,0 +1,122 @@
+{% extends "admin_base.html" %}
+{% block title %}Insurance{% endblock %}
+
+{% block admin_content %}
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+
+        <h4 class="mb-3">
+            {% if edit_mode %}Update Insurance{% else %}Add Insurance{% endif %}
+        </h4>
+
+        <form method="post">
+            {% csrf_token %}
+            {% if edit_mode %}
+                <input type="hidden" name="edit_id" value="{{ edit_id }}">
+            {% endif %}
+
+            <div class="row">
+
+                <!-- Car -->
+                <div class="col-md-6 mb-3">
+                    {{ form.car }}
+                </div>
+
+                <!-- Provider -->
+                <div class="col-md-6 mb-3">
+                    {{ form.provider }}
+                </div>
+
+                <!-- Policy Number -->
+                <div class="col-md-6 mb-3">
+                    {{ form.policy_number }}
+                </div>
+
+                <!-- Start Date -->
+                <div class="col-md-6 mb-3">
+                    {{ form.start_date }}
+                </div>
+
+                <!-- End Date -->
+                <div class="col-md-6 mb-3">
+                    {{ form.end_date }}
+                </div>
+
+                <!-- Coverage -->
+                <div class="col-12 mb-3">
+                    {{ form.coverage_details }}
+                </div>
+
+            </div>
+
+            <button class="btn {% if edit_mode %}btn-warning{% else %}btn-success{% endif %}">
+                {% if edit_mode %}Update{% else %}Add{% endif %}
+            </button>
+
+            {% if edit_mode %}
+                <a href="{% url 'admin_insurance' %}" class="btn btn-secondary ms-2">
+                    Cancel
+                </a>
+            {% endif %}
+        </form>
+
+    </div>
+</div>
+
+
+<div class="card shadow">
+    <div class="card-body">
+
+        <h5>Insurance Records</h5>
+        <hr>
+
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Car</th>
+                    <th>Provider</th>
+                    <th>Policy</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th width="150">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for obj in objects %}
+                <tr>
+                    <td>{{ obj.car }}</td>
+                    <td>{{ obj.provider }}</td>
+                    <td>{{ obj.policy_number }}</td>
+                    <td>{{ obj.start_date }}</td>
+                    <td>{{ obj.end_date }}</td>
+                    <td>
+                        <a href="?edit={{ obj.pk }}" class="btn btn-sm btn-warning">
+                            Edit
+                        </a>
+
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="delete_id" value="{{ obj.pk }}">
+                            <button class="btn btn-sm btn-danger"
+                                    onclick="return confirm('Delete this record?')">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted">
+                        No insurance records found
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+{% endblock %}

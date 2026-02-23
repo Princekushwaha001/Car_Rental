@@ -1,0 +1,22 @@
+{% extends "admin_base.html" %}
+{% block title %}Add Car{% endblock %}
+
+{% block admin_content %}
+
+<div class="card shadow">
+    <div class="card-body">
+        <h4>Add New Car</h4>
+        <hr>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit" class="btn btn-success btn-block">
+                Add Car
+            </button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

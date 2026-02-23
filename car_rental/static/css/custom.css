@@ -1,0 +1,142 @@
+/* Custom theme: light pink background with white content panels */
+
+body {
+  background-color: #fff0f5; /* light pink */
+  color: #222;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* Navbar styling */
+.navbar {
+  background-color: #ffffff !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.navbar .navbar-brand {
+  color: #d6336c !important; /* warm pink */
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.navbar .nav-link {
+  color: #444 !important;
+  font-weight: 500;
+}
+
+/* Auth buttons: make them match the pink theme */
+.btn-outline-light {
+  color: #d6336c !important;
+  border-color: #ffd1e6 !important;
+  background-color: transparent !important;
+}
+
+.btn-outline-light:hover {
+  background-color: #fff0f5 !important;
+  color: #b21f51 !important;
+}
+
+.btn-warning {
+  background-color: #ffd1e6 !important;
+  border-color: #ffd1e6 !important;
+  color: #8a0f3a !important;
+}
+
+/* Cards and content panels */
+.card {
+  border: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(18, 18, 18, 0.06);
+}
+
+.container {
+  /* Slightly lift content from the pink background with subtle white backdrop */
+}
+
+/* Make headings stand out */
+h2, h3, h4 {
+  color: #2b2b2b;
+}
+
+/* Footer styling */
+footer {
+  background-color: #ffffff !important;
+  color: #4a4a4a;
+  border-top: 4px solid #ffd1e6;
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.03);
+}
+
+footer a {
+  color: #b21f51 !important;
+}
+
+/* Make badges / availability stand out with pink accents */
+.badge-success {
+  background-color: #2ecc71 !important; /* keep green for availability */
+}
+
+/* Page container spacing to feel more like a card */
+.page-card {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+/* Floating messages style tweak */
+.floating-alert {
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .navbar .navbar-brand { font-size: 1.05rem; }
+}
+
+/* Explicitly override Bootstrap's .bg-dark for navbar and footer */
+.navbar.navbar-dark.bg-dark,
+.navbar.bg-dark {
+  background-color: #ffffff !important;
+  color: #222 !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+.navbar.navbar-dark .navbar-brand,
+.navbar.bg-dark .navbar-brand {
+  color: #d6336c !important;
+}
+
+.navbar.navbar-dark .nav-link,
+.navbar.bg-dark .nav-link {
+  color: #444 !important;
+}
+
+/* Footer override when templates use Bootstrap dark classes */
+footer.bg-dark,
+footer.bg-dark.text-light {
+  background-color: #ffffff !important;
+  color: #4a4a4a !important;
+  border-top: 4px solid #ffd1e6 !important;
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.03);
+}
+
+footer.bg-dark a,
+footer.bg-dark a:visited {
+  color: #b21f51 !important;
+}
+
+footer.bg-dark hr {
+  border-color: rgba(178,31,81,0.12) !important;
+}
+
+/* Make small icons / contact accents pink */
+footer.bg-dark .small, footer.bg-dark p, footer.bg-dark h5, footer.bg-dark h6 {
+  color: #4a4a4a !important;
+}
+
+/* Ensure footer links have a subtle hover */
+footer.bg-dark a:hover {
+  color: #8a0f3a !important;
+  text-decoration: underline;
+}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Booking Details</h2>
+<p><strong>Booking ID:</strong> {{ booking.id }}</p>
+<p><strong>User:</strong> {{ booking.user.username }}</p>
+
+<p><strong>Start Date:</strong> {{ booking.start_date }}</p>
+<p><strong>End Date:</strong> {{ booking.end_date }}</p>
+<p><strong>Price per day :</strong> {{ booking.price_per_day }}</p>
+<p><strong>Total Amount:</strong> {{ booking.total_amount }}</p>
+
+
+
+    <button  class="btn btn-primary" id="pay-btn">Proceed to Payment</button>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+<script>
+var options = {
+  "key": "{{ razorpay_key }}",
+  "amount": "{{ amount }}00",
+  "currency": "INR",
+  "order_id": "{{ order_id }}",
+  "handler": function (response) {
+
+    fetch("/payments/verify-payment/{{booking_id}}/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(response)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === "success") {
+        window.location.href = "/payments/payment-success/";
+      } else {
+         window.location.href = "/payments/payment-failed/";
+      }
+    })
+    .catch(error => {
+      console.error("Payment verification error:", error);
+      window.location.href = "/payments/payment-failed/";
+    });
+  }
+};
+
+var rzp1 = new Razorpay(options);
+document.getElementById("pay-btn").onclick = function (e) {
+  rzp1.open();
+  e.preventDefault();
+};
+</script>
+
+{% endblock %}

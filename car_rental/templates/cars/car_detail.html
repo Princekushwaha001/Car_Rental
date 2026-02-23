@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ car.brand }} {{ car.model }}{% endblock %}
+
+{% block header %}
+{% include "partial/header.html" %}
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+
+    <!-- TOP SECTION -->
+    <div class="row">
+
+        <!-- LEFT : Images -->
+        <div class="col-md-7">
+
+            <!-- Main Image -->
+            <div class="main-image mb-3">
+                {% if car.image %}
+                <img id="mainCarImage" src="{{ car.image.url }}" class="img-fluid rounded shadow-sm"
+                    alt="{{ car.brand }} {{ car.model }}">
+                {% else %}
+                <div class="no-image">No Image Available</div>
+                {% endif %}
+            </div>
+
+            <!-- Thumbnails -->
+            <div class="d-flex ">
+                {% for img in car.images.all %}
+                <img src="{{ img.image.url }}" class="thumb-img mr-1 mb-2" onclick="changeMainImage(this)">
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <!-- RIGHT : Booking Card -->
+        <div class="col-md-5">
+
+            <div class="booking-card">
+
+                <h4 class="price">
+                    ₹{{ car.base_price_per_day }}
+                    <small>/ day</small>
+                </h4>
+
+                {% if bookcar_form.errors %}
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        {% for field in bookcar_form %}
+                        {% for error in field.errors %}
+                        <li>{{ field.label }}: {{ error }}</li>
+                        {% endfor %}
+                        {% endfor %}
+                        {% for error in bookcar_form.non_field_errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        {{ bookcar_form.start_date|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ bookcar_form.end_date|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ bookcar_form.pickup_location|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ bookcar_form.dropoff_location|as_crispy_field }}
+                    </div>
+
+                    <button class="btn btn-primary btn-block mt-3" type="submit">
+                        Book Now
+                    </button>
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- BOTTOM DETAILS -->
+    <div class="row mt-5">
+        <div class="col-md-12">
+
+            <h4 class="font-weight-bold mb-3">
+                {{ car.brand }} {{ car.model }} - Details
+            </h4>
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-md-4 mb-2"><strong>Year:</strong> {{ car.year }}</div>
+                        <div class="col-md-4 mb-2"><strong>Transmission:</strong> {{ car.transmission }}</div>
+                        <div class="col-md-4 mb-2"><strong>Fuel Type:</strong> {{ car.fuel_type }}</div>
+                        <div class="col-md-4 mb-2"><strong>Mileage:</strong> {{ car.mileage }} km/l</div>
+                        <div class="col-md-4 mb-2"><strong>Seats:</strong> {{ car.seats }}</div>
+                        <div class="col-md-4 mb-2"><strong>Color:</strong> {{ car.color }}</div>
+                        <div class="col-md-4 mb-2"><strong>Registration:</strong> {{ car.registration_number }}</div>
+                        <div class="col-md-4 mb-2">
+                            <strong>Status:</strong>
+                            {% if car.status %}
+                            <span class="badge badge-success">Available</span>
+                            {% else %}
+                            <span class="badge badge-danger">Not Available</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<script>
+    function changeMainImage(thumb) {
+        const mainImage = document.getElementById("mainCarImage");
+        mainImage.src = thumb.src;
+    }
+</script>
+
+{% endblock %}
+
+{% block footer %}
+{% include "partial/footer.html" %}
+{% endblock %}

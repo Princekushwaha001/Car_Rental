@@ -1,0 +1,57 @@
+.car-card {
+            border: none;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .car-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+
+        .car-image {
+            overflow: hidden;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+        }
+
+        .car-image img {
+            transition: transform 0.4s ease;
+        }
+
+        .car-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .badge-custom {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            z-index: 2;
+            font-size: 12px;
+            padding: 6px 10px;
+            border-radius: 20px;
+        }
+
+        .rating-pill {
+            background: #fff3cd;
+            color: #856404;
+            font-size: 13px;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .price span {
+            font-size: 13px;
+            color: #6c757d;
+        }
+        a {
+            text-decoration: None;
+            color: #0c0c0c;
+        }

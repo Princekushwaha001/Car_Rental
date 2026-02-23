@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Cars Available{% endblock %}
+{% block header %}
+        {% include "partial/header.html" %}
+{% endblock %}
+
+
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="mb-4">Cars Available</h2>
+
+    <div class="row">
+
+        {% for car in cars %}
+        <div class="col-lg-4 col-md-6 mb-4">
+
+            <a href="{% url 'car-details' car.slug %}" class="text-dark text-decoration-none">
+
+                <div class="card h-100">
+
+                    <!-- Image -->
+                    <img src="{{ car.image.url }}"
+                         class="card-img-top"
+                         alt="{{ car.brand }} {{ car.model }}">
+
+                    <div class="card-body">
+
+                        <!-- Status -->
+                        {% if car.status %}
+                            <span class="badge badge-success mb-2">Available</span>
+                        {% else %}
+                            <span class="badge badge-danger mb-2">Not Available</span>
+                        {% endif %}
+
+                        <h5 class="card-title">
+                            {{ car.brand }} {{ car.model }}
+                        </h5>
+
+                        <p class="text-muted mb-2">
+                            {{ car.year }} · {{ car.transmission }} · {{ car.fuel_type }}
+                        </p>
+
+                        <h6 class="font-weight-bold">
+                            ₹{{ car.base_price_per_day|default:"0" }}/day
+                        </h6>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+{% endblock %}
+{% block footer %}
+        {% include "partial/footer.html" %}
+{% endblock %}

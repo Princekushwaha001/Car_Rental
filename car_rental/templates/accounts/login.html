@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+
+{% block title %}Login{% endblock %}
+
+{% block css %}
+<style>
+    .auth-wrapper {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .auth-card {
+        width: 420px;
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Toggle */
+    .toggle-buttons {
+        display: flex;
+        margin-bottom: 25px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: none;
+    }
+
+    .toggle-buttons button {
+        flex: 1;
+        border: none;
+        padding: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+    }
+
+    .toggle-buttons button:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+    .active-tab {
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: white;
+    }
+
+    .inactive-tab {
+        background: #f1f1f1;
+        color: #333;
+    }
+
+    /* Sliding Section */
+    .extra-section {
+        max-height: 200px;
+        overflow: hidden;
+        transition: all 0.4s ease;
+        border: none;
+    }
+
+    .extra-hidden {
+        max-height: 0;
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    /* Admin Badge */
+    .admin-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: #dc3545;
+        color: white;
+        padding: 5px 10px;
+        font-size: 12px;
+        border-radius: 20px;
+        display: none;
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+
+    <div class="auth-card">
+    
+
+        <!-- ADMIN BADGE -->
+        <div id="adminBadge" class="admin-badge">
+            Admin Access Only
+        </div>
+
+        <!-- TOGGLE -->
+        <div class="toggle-buttons">
+            <button id="userTab" class="active-tab">User</button>
+            <button id="adminTab" class="inactive-tab">Admin</button>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <input type="text" name="username" class="form-control" placeholder="Username" required>
+            </div>
+
+            <div class="form-group">
+                <input type="password" name="password" class="form-control" placeholder="Password" required>
+            </div>
+            <input type="hidden" name="login_type" id="loginType" value="user">
+            <button type="submit" class="btn btn-primary btn-block">
+                Sign In
+            </button>
+        </form>
+
+        <!-- USER EXTRA OPTIONS -->
+        <div id="userExtras" class="extra-section mt-3">
+            <a href="{% url 'register' %}" class="d-block text-center">Create Account</a>
+            <hr>
+            <a href="{% provider_login_url 'google' %}" class="btn btn-outline-danger btn-block">
+                Sign in with Google
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    const userTab = document.getElementById("userTab");
+    const adminTab = document.getElementById("adminTab");
+    const userExtras = document.getElementById("userExtras");
+    const adminBadge = document.getElementById("adminBadge");
+
+    userTab.addEventListener("click", function () {
+        userTab.classList.add("active-tab");
+        userTab.classList.remove("inactive-tab");
+
+        adminTab.classList.add("inactive-tab");
+        adminTab.classList.remove("active-tab");
+
+        userExtras.classList.remove("extra-hidden");
+        adminBadge.style.display = "none";
+    });
+
+    adminTab.addEventListener("click", function () {
+        adminTab.classList.add("active-tab");
+        adminTab.classList.remove("inactive-tab");
+
+        userTab.classList.add("inactive-tab");
+        userTab.classList.remove("active-tab");
+
+        userExtras.classList.add("extra-hidden");
+        adminBadge.style.display = "block";
+    });
+    const loginTypeInput = document.getElementById("loginType");
+
+    userTab.addEventListener("click", function () {
+        loginTypeInput.value = "user";
+    });
+
+    adminTab.addEventListener("click", function () {
+        loginTypeInput.value = "admin";
+    });
+</script>
+
+{% endblock %}
