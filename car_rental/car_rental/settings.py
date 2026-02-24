@@ -38,7 +38,8 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-replace-this-f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['car-rental-escxcaf5cmevezhc.southindia-01.azurewebsites.net']
+# ALLOWED_HOSTS = ['car-rental.southindia-01.azurewebsites.net']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -100,12 +101,20 @@ WSGI_APPLICATION = 'car_rental.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if os.environ.get("WEBSITE_HOSTNAME"):  # Running on Azure
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': '/home/db.sqlite3',  # Persistent on Azure
+        }
     }
-}
+else:  # Local development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
