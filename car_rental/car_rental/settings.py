@@ -105,7 +105,7 @@ if os.environ.get("WEBSITE_HOSTNAME"):  # Running on Azure
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': '/home/db.sqlite3',  # Persistent on Azure
+            'NAME': '/home/site/wwwroot/db.sqlite3',
         }
     }
 else:  # Local development
